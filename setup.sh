@@ -131,3 +131,4 @@ fi
 
 echo "Setup completed successfully!"
 echo "Please restart your terminal or run 'source ~/.bashrc' (or equivalent for your shell) to apply changes."
+
