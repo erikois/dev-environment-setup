@@ -52,6 +52,14 @@ setup_vim() {
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
+    # Ensure gruvbox color scheme is installed
+    if ! grep -q "Plug 'morhetz/gruvbox'" ~/.vimrc; then
+        echo "Adding gruvbox plugin to .vimrc"
+        echo "call plug#begin('~/.vim/plugged')" >> ~/.vimrc
+        echo "Plug 'morhetz/gruvbox'" >> ~/.vimrc
+        echo "call plug#end()" >> ~/.vimrc
+    fi
+
     # Install plugins
     vim +PlugInstall +qall
 }
