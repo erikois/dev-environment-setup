@@ -82,17 +82,32 @@ setup_tmux() {
 # Setup Node.js with nvm
 setup_node() {
     echo "Setting up Node.js with nvm..."
-    if command_exists nvm; then
-        echo "nvm is already installed"
+    if command_exists node; then
+        local node_version=$(node -v)
+        echo "Node.js $node_version is already installed."
+        if ! command_exists nvm; then
+            echo "However, it's not managed by nvm. Would you like to install nvm and reinstall Node.js?"
+            if confirm "Install nvm and reinstall Node.js?"; then
+                install_nvm
+            else
+                echo "Skipping nvm installation. Using existing Node.js installation."
+                return
+            fi
+        fi
     else
-        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-        export NVM_DIR="$HOME/.nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+        install_nvm
     fi
     
     nvm install 20
     nvm use 20
     nvm alias default 20
+}
+
+install_nvm() {
+    echo "Installing nvm..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 }
 
 # Main script execution
